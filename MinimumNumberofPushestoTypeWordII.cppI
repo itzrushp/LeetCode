@@ -1,0 +1,52 @@
+class Solution {
+public:
+    // Same as 3014. Minimum Number of Pushes to Type Word I
+    int minimumPushes(string word) {
+        int ans = 0;
+        vector<int> count(26);
+
+        for (const char c : word)
+            ++count[c - 'a'];
+
+        ranges::sort(count, greater<>());
+
+        for (int i = 0; i < 26; ++i)
+            ans += count[i] * (i / 8 + 1);
+
+        return ans;
+    }
+};
+
+auto init = []() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+    return 0;
+}();
+
+/*
+
+# Intuition
+The problem is similar to minimizing the number of pushes required to type a word on a keyboard. The keyboard is divided into three rows, each row containing 8 characters.
+
+# Approach
+1. Count the frequency of each character in the word.
+2. Sort these frequencies in descending order.
+3. Calculate the minimum number of pushes required:
+   - The first 8 most frequent characters can be typed in 1 push each.
+   - The next 8 most frequent characters will require 2 pushes each, and so on.
+4. Sum up the total pushes required.
+
+# Complexity
+- **Time complexity:** $$O(n + k \log k)$$ where \(n\) is the length of the string and \(k\) is the number of unique characters (26 in this case).
+- **Space complexity:** $$O(k)$$ where \(k\) is the number of unique characters (26 in this case).
+
+# Example Dry Run
+Given `word = "apple"`:
+1. Frequency count: `a: 1, p: 2, l: 1, e: 1`
+2. Sorted frequencies: `[2, 1, 1, 1]`
+3. Calculating pushes:
+   - First 8: `[2, 1, 1, 1]` -> \(2 \cdot 1 + 1 \cdot 1 + 1 \cdot 1 + 1 \cdot 1 = 5\)
+4. Total pushes = 5
+
+*/
